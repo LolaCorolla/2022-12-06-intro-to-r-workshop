@@ -14,6 +14,8 @@
 # R can do sums ...
 3 + 5
 12 / 7
+3 ** 2 # power of
+3 ^ 2 # power of
 
 # other operators
 #
@@ -25,14 +27,14 @@
 #
 
 # What does: 11 + 1 / 6  evaluate to ?
+11 + 1 / 6
 
-
-# Solution:
+# Solution: 11.16667 - its a double or floating point number
 
 
 # Calculate 10 plus 2 all divided by 3 and then squared
-
-# Solution:
+((10 + 2)/3)^2
+# Solution: 16
 
 
 # Storing values
@@ -59,13 +61,15 @@ a + b               # we can add them together just like numbers
 # How would you do this?
 #
 # Solution:
+c <- a + b
+a <- 100
+# changing a does not automatically change c, c needs to be re-run to change
 
-
-
-# Logical operators
+# Logical operators - T or F
 #
 # == != < > >= <= !
 1 < 124
+! 1 > 4 # 1 is NOT bigger than 4 = T
 
 #
 # Sensible object names are sensible ...
@@ -78,14 +82,16 @@ names_that_are_unreasonably_long_are_not_a_good_idea <- "correct"
 nouns_are_good <- TRUE
 TRUE <- 17
 ekljre2jklwef023ijlefj93jkl23rj90f32k <- 1
+1_good_name <-  "cannot start with numbers"
 
 # 
 # Exercise
 # 
 #
-# Assign the name of this workshop to a object with a good name.
+# Assign the name of this workshop to an object with a good name.
 #
 # Solution: [Hint:       <- "Introduction to R"]
+workshop_name <- "Introduction to R"
 
 # Assign the name of video conferencing tool to an object
 #
@@ -96,11 +102,11 @@ ekljre2jklwef023ijlefj93jkl23rj90f32k <- 1
 #
 #  min_height
 #  max.height
-#  _age
-#  .mass
+#  _age             INVALID
+#  .mass            Creates sub-object, not variable object
 #  MaxLength
-#  min-length
-#  2widths
+#  min-length       INVALID (R thinks min and length are being subtracted)
+#  2widths          INVALID
 #  celsius2kelvin
 
 
@@ -125,11 +131,11 @@ weight_lb          # and so does typing the name of the object
 # 
 # What are the values after each statement in the following?
 # 
-# mass <- 47.5            # mass is: 
-# age  <- 122             # age is:
-# mass <- mass * 2.0      # mass is:
-# age  <- age - 20        # age is:
-# mass_index <- mass/age  # mass_index is: 
+mass <- 47.5            # mass is: 47.5
+age  <- 122             # age is: 122
+mass <- mass * 2.0      # mass is: 95
+age  <- age - 20        # age is: 102
+mass_index <- mass/age  # mass_index is: 0.9313725
 #
 # How do we do we know if our answers are correct ? 
 # [Hint: <highlight> [ALT][ENTER]
@@ -151,10 +157,10 @@ weight_lb          # and so does typing the name of the object
 # Add explanatory comments to the following lines of code
 #
 
-ft <- 3
-in <- ft * 12
-cms <- in * 2.54
-m = cms / 100
+ft <- 3 # 3 feet
+in <- ft * 12 # convert to inches
+cms <- in * 2.54 # convert to cm
+m = cms / 100 # convert to m
 
 #
 # Topic: Functions and Arguments
@@ -162,7 +168,7 @@ m = cms / 100
 # Square Root:  sqrt()
 #
 
-# arguments can be constants of objecs
+# arguments can be constants of objects
 
 # Absolute Value: abs()
 # 
@@ -173,9 +179,13 @@ m = cms / 100
 
 # Getting help about particular functions 
 #
-# Question Mark followed by function name, eg: ?round
+# Question: Mark followed by function name, eg: ?round
 
-# or if we just want to know bount the arguments, use: args()
+# or if we just want to know about the arguments, use: args()
+args(round)
+round(pi, digits = 8)
+round(456.54466, digits = -1)
+round(456.54466, digits = -2)
 
 # Argument have default order - but can re-ordered using names
 #
@@ -188,8 +198,8 @@ m = cms / 100
 # what does the function called log10() do ?  Can you test it ?
 #
 # Answer:
-
-
+?log10
+log10(1000)
 
 #
 # Topic: Vectors and Data Types
@@ -201,17 +211,21 @@ m = cms / 100
 # Let's assign the following numbers to an object called glengths:
 #
 #  4.6, 3000, 50000
+glengths <- c(4.6, 3000, 50000)
 
 # and repeat to create a vector of species
 #
 #  "ecoli", "human", "corn"
+species <- c("ecoli", "human", "corn")
 
 # use length() to obtain how many elements a vector contains
+length(species)
 
 # we can also ask what structure of our vectors look like with str()
+str(species)
 
 # and also see what class they are with class()
-
+class(species)
 
 # and btw, there are other classes as well ...
 #
@@ -225,18 +239,21 @@ m = cms / 100
 #
 
 # multiply glengths by 5
-# add glength to itsself
+glengths * 5
+# add glength to itself
+glengths + glengths
 
-# appending and prepending elememts to a vector
+# appending and prepending elements to a vector
 #
 # c(vector, value)
 # c(value, vector)
 #
-
+c(glengths, 100) # add element
+c(-500, glengths, 100) # add element in certain order
 
 
 # note all the elements of a vector must be the same type
-length_species <- c(4.5, "ecoli")
+length_species <- c(4.5, "ecoli") # all will be character class
 length_species
 
 # This automatic conversion is called 'coercion' or 'casting' ..
@@ -260,10 +277,10 @@ length_species
 
 # What will happen in each of these examples?
 #
-#   num_char <- c(1, 2, 3, "a")
-#   num_logical <- c(1, 2, 3, TRUE)
-#   char_logical <- c("a", "b", "c", TRUE)
-#   tricky <- c(1, 2, 3, "4")
+#   num_char <- c(1, 2, 3, "a") # all char
+#   num_logical <- c(1, 2, 3, TRUE) # T = 1
+#   char_logical <- c("a", "b", "c", TRUE) # all char
+#   tricky <- c(1, 2, 3, "4") # all char
 #
 # [Hint: use class() to check the data type of your objects]
 #
@@ -288,6 +305,10 @@ length_species
 animals <- c("mouse", "rat", "dog", "cat")
 
 # reference (access) the second element using [] 
+animals[2]
+animals[c(1, 4)] # gives multiple elements
+animals[-2] # removes 2nd element
+animals[c(-1, -4)] # removes multiple elements
 
 # access the subset consisting of element 3 and element 2
 
@@ -298,13 +319,15 @@ animals <- c("mouse", "rat", "dog", "cat")
 
 # Conditional subsetting
 #
-# weight_g <- c(21,   34,    39,   54,   55)
-# weight_g[   c(TRUE, FALSE, TRUE, TRUE, FALSE)]
+weight_g <- c(21,   34,    39,   54,   55)
+weight_g[   c(TRUE, FALSE, TRUE, TRUE, FALSE)] #only selected T
 # 
 
 # using comparison operators to generate a 'logical' vector 
 #
 # vector of which weight are greater then 50
+weight_g > 50 # only last 2 are T
+weight_g[weight_g > 50] # only indexes the desired numbers with T
 
 # ... and the use this to subset the data vector
 
