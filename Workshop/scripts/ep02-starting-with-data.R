@@ -212,22 +212,29 @@ plot(sex)
 # R has a whole library for dealing with dates ...
 library(lubridate)
 
+my_date <- ymd("2015-01-01")
+str(my_date) # class date
+class(my_date)
 
-# R can concatenated things together using paste()
-
+# R can concatenate things together using paste()
+randomness <- paste("abc", "123", "xyz", sep = "-")
+my_date_2 <- ymd(paste("2015", "01", "26", sep = "-"))
+class(my_date_2)
 
 # 'sep' indicates the character to use to separate each component
 
 
 # paste() also works for entire columns
 
-
 # let's save the dates in a new column of our dataframe surveys$date 
+surveys$date <- ymd(paste(surveys$year, surveys$month, surveys$day,
+                          sep = "-"))
 
 
 # and ask summary() to summarise 
-
+summary(surveys$date)
 
 # but what about the "Warning: 129 failed to parse"
-
+missing_dates <- surveys[is.na(surveys$date), c("year", "month", "day")]
+# April and September only have 30 days, not 31
 
