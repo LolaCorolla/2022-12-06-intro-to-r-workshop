@@ -15,6 +15,8 @@ library(tidyverse)
 # load data
 
 surveys_complete <- read_csv("data_out/surveys_complete.csv")
+surveys_complete <- surveys_complete %>% 
+  filter(!is.na(sex))
 
 # empty plot
 ggplot(data = surveys_complete)
@@ -277,13 +279,40 @@ surveys_complete %>%
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Split one plot into Multiple plots
+surveys_complete %>% 
+  count(year, genus) %>% 
+  ggplot(mapping = aes(x = year,
+                       y = n)) +
+  geom_line() +
+  facet_wrap(facets = vars(genus)) # breaks up the groups of genus
+# into separate plots
 
-
-
+surveys_complete %>% 
+  count(year, sex, genus) %>% 
+  ggplot(mapping = aes(x = year,
+                       y = n,
+                       colour = sex)) +
+  geom_line() +
+  facet_wrap(facets = vars(genus))
 
 # organise rows and cols to show sex and genus
 
+surveys_complete %>% 
+  count(year, sex, genus) %>% 
+  ggplot(mapping = aes(x = year,
+                       y = n,
+                       colour = sex)) +
+  geom_line() +
+  facet_grid(rows = vars(sex),
+             cols = vars(genus))
 
+ggplot(data = year_count,
+       mapping = aes(x = year,
+                     y = n,
+                     colour = sex)) +
+  geom_line() +
+  facet_grid(rows = vars(sex),
+             cols = vars(genus))
 
 # organise rows by genus only
 
@@ -299,7 +328,14 @@ surveys_complete %>%
 # Topic: Themes
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # themes set a look
-
+surveys_complete %>% 
+  count(year, sex, genus) %>% 
+  ggplot(mapping = aes(x = year,
+                       y = n,
+                       colour = sex)) +
+  geom_line() +
+  facet_wrap(vars(genus)) +
+  theme_bw()
 
 
 # ------------------------
@@ -308,12 +344,20 @@ surveys_complete %>%
 # Put together what you've learned to create a plot that depicts how the average 
 # weight of each species changes through the years.
 # Hint: need to do a group_by() and summarize() to get the data before plotting
-
+surveys_complete %>% 
+  group_by(year, species_id) %>% # isolates year and species to only look at
+  # mean values for those two groups
+  summarise(mean_weight = mean(weight)) %>% 
+  ggplot(mapping = aes(x = year,
+                       y = mean_weight)) +
+  geom_line() +
+  facet_wrap(vars(species_id)) +
+  theme_bw()
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Topic: Customisation
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Makinging it your own
+# Making it your own
 
 
 
