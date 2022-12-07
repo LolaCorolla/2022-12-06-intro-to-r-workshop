@@ -358,13 +358,58 @@ surveys_complete %>%
 # Topic: Customisation
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Making it your own
-
+surveys_complete %>% 
+  count(year, sex, genus) %>% 
+  ggplot(mapping = aes(x = year,
+                       y = n,
+                       colour = sex)) +
+  geom_line() +
+  facet_wrap(vars(genus)) +
+  labs(title = "Observed genera through time",
+       x = "Year of observations",
+       y = "Number of individuals",
+       colour = "Sex") +
+  theme_bw() + # removes grey background
+  theme(text = element_text(size = 16), # size of text
+        axis.text.x = element_text(colour = "grey20",
+                                   size = 12,
+                                   angle = 90, # turns year 90 degrees
+                                   hjust = 0.5,
+                                   vjust = 0.5), # centers it on tick
+        strip.text = element_text(face = "italic"))
 
 
 # save theme configuration as an object
+gray_theme <-   theme(text = element_text(size = 16), # size of text
+                      axis.text.x = element_text(colour = "grey20",
+                                                 size = 12,
+                                                 angle = 90,
+                                                 hjust = 0.5,
+                                                 vjust = 0.5),
+                      strip.text = element_text(face = "italic"))
 
+# shorter code
+my_plot <- surveys_complete %>%
+  count(year, sex, genus) %>%
+  ggplot(mapping = aes(x = year,
+                       y = n,
+                       colour = sex)) +
+  geom_line() +
+  facet_wrap(vars(genus)) +
+  labs(title = "Observed genera through time",
+    x = "Year of observations",
+    y = "Number of individuals",
+    colour = "Sex") +
+  theme_bw() + # removes grey background
+  gray_theme
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Topic: Exporting plots
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ggsave("figures/my_plot_tester1.pdf", my_plot,
+       width = 15, height = 10)
+
+ggsave("figures/my_plot_tester1.png", my_plot,
+       width = 15, height = 10)
